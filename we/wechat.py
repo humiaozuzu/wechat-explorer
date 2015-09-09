@@ -20,7 +20,7 @@ class RecordType:
     EMOTION = 47
     VIDEO = 43
     CARD = 42
-    VOICE = 43
+    VOICE = 34
     IMAGE = 3
     TEXT = 1
 
