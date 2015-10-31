@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+    <div class="chat_bd">
+    <div class="chat_cont">
+        {% for record in records %}
+        <div ng-repeat="message in chatContent" class="ng-scope">
+            <div class="clearfix" message-directive="">
+                <div ng-switch="" style="overflow: hidden;">
+                    <div class="message ng-scope you">
+                        <img class="avatar" src="img/default.jpeg" height="90" width="90" title="">
+                        <div class="content">
+                            <h4 class="nickname ng-binding ng-scope">{{ record.nickname }}</h4>
+                            <div class="bubble js_message_bubble ng-scope bubble_default left">
+                                <div class="bubble_cont ng-scope">
+                                    <div class="plain">
+                                        <pre class="js_message_plain ng-binding" ng-bind-html="message.MMActualContent">{{ record.msg }}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+</body>
+
+</html>

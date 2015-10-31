@@ -1,0 +1,241 @@
+html {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6
+}
+
+input,textarea,button,a {
+    outline: 0
+}
+
+body,h1,h2,h3,h4,h5,h6,p,ul,ol,dl,dd,fieldset,textarea {
+    margin: 0
+}
+
+fieldset,legend,textarea,input {
+    padding: 0
+}
+
+ul,ol {
+    padding-left: 0;
+    list-style-type: none
+}
+
+a img,fieldset {
+    border: 0
+}
+
+article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary {
+    display: block
+}
+
+audio,canvas,video {
+    display: inline-block
+}
+
+
+.clearfix:after {
+    content: " ";
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both
+}
+
+
+body {
+    font-family: "Helvetica Neue",Helvetica,"Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;
+    line-height: 1.6;
+}
+
+pre {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    white-space: pre-wrap;
+    word-break: initial
+}
+
+.chat_bd {
+  min-width: 720px;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  background-color: #eee;
+  height: 100%;
+  overflow: hidden
+}
+
+.chat_cont {
+  padding: 0 19px;
+  overflow-y: auto;
+  overflow-x: hidden
+}
+
+
+.message {
+    margin-bottom: 16px;
+    float: left;
+    width: 100%;
+    page-break-inside: avoid !important;
+}
+
+.message .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    float: left;
+    cursor: pointer
+}
+
+.message .nickname {
+    font-weight: 400;
+    padding-left: 10px;
+    font-size: 12px;
+    height: 22px;
+    line-height: 24px;
+    color: #4f4f4f;
+    width: 350px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal
+}
+
+.message .content {
+    overflow: hidden
+}
+
+.message_system {
+    text-align: center;
+    margin: 10px auto;
+    max-width: 50%
+}
+
+.message_system .content {
+    display: inline-block;
+    background-color: #dcdcdc;
+    font-size: 12px;
+    padding: 1px 18px;
+    color: #fff;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px
+}
+
+.bubble {
+    max-width: 500px;
+    min-height: 1em;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    text-align: left;
+    font-size: 14px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    margin: 0 10px
+}
+
+.bubble.bubble_default {
+ background-color: #fff
+
+}
+
+.bubble:before,.bubble:after {
+    position: absolute;
+    top: 14px;
+    border: 6px solid transparent;
+    content: " "
+}
+
+.bubble.left:before,.bubble.left:after {
+    right: 100%
+}
+
+.bubble.left:after {
+    border-right-color: #FFF;
+    border-right-width: 4px
+}
+
+.bubble.right:before,.bubble.right:after {
+    left: 100%
+}
+
+.bubble.right:after {
+    border-left-color: #FFF
+}
+
+.bubble.bubble_primary {
+    background-color: #b2e281
+}
+
+.bubble.bubble_primary.left:after {
+    border-right-color: #b2e281;
+    border-right-width: 4px
+}
+
+.bubble.bubble_primary.right:after {
+    border-left-color: #b2e281;
+    border-left-width: 4px
+}
+
+.bubble.bubble_primary.right.arrow_primary:before {
+    border-left-color: #b2e281;
+    border-left-width: 4px
+}
+
+.bubble.bubble_primary.right.arrow_primary:after {
+    border-left-color: #fff;
+    border-left-width: 4px;
+    margin-left: -2px
+}
+
+.bubble.no_arrow:before,.bubble.no_arrow:after {
+    display: none
+}
+
+.bubble.fill {
+    padding: 0
+}
+
+.bubble.fill img {
+    display: block;
+    cursor: pointer
+}
+
+.bubble_hd {
+    border-bottom: 1px solid #cfcfcf;
+    padding-bottom: 7px;
+    margin-bottom: 5px
+}
+
+.bubble_primary .bubble_hd {
+    border-bottom: 1px solid #75bf50
+}
+
+
+.bubble_cont {
+    word-wrap: break-word;
+    word-break: break-all;
+    min-height: 25px
+}
+
+.bubble_cont li {
+    overflow: hidden;
+    color: #888
+}
+
+.bubble_cont img {
+    vertical-align: middle
+}
+
+.bubble_cont .plain {
+    padding: 9px 13px
+}
