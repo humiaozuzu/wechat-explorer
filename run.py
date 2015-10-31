@@ -2,10 +2,14 @@
 
 import argparse
 import datetime
+import logging
 
 from we.wechat import WechatParser
 from we.wechat import RecordTypeCN
-from we.contrib.chatroom_analytics import ChatroomAnalytics
+
+logger = logging.getLogger('wechat_parser')
+logger.addHandler(logging.StreamHandler())
+logger.setLevel('DEBUG')
 
 parser = argparse.ArgumentParser(prog='Wechat Explorer')
 subparser = parser.add_subparsers(dest='command', help='sub-command help')
@@ -29,6 +33,13 @@ p4.add_argument('chatroom_id', type=str)
 p4.add_argument('chatroom_user_id', type=str)
 p4.add_argument('start_at', type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d'))
 p4.add_argument('end_at', type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d'))
+p5 = subparser.add_parser('export_chatroom_records', help='export chatroom records as HTML')
+p5.add_argument('path', type=str)
+p5.add_argument('user_id', type=str)
+p5.add_argument('chatroom_id', type=str)
+p5.add_argument('start_at', type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d'))
+p5.add_argument('end_at', type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d'))
+p5.add_argument('export_path', type=str)
 
 args = parser.parse_args()
 
@@ -49,6 +60,7 @@ elif args.command == 'get_chatroom_stats':
     friends = wechat.get_chatroom_friends(args.chatroom_id)
     id_nicknames = {friend['id']: friend['nickname'] for friend in friends}
 
+    from we.contrib.chatroom_analytics import ChatroomAnalytics
     ca = ChatroomAnalytics(args.path, args.user_id, args.chatroom_id, args.start_at, args.end_at)
     stats = ca.get_stats(friends)
 
@@ -59,18 +71,21 @@ elif args.command == 'get_chatroom_stats':
     users_count = stats['users_rank']
     print '\nTop 50 least talking:'
     for i, user in enumerate(users_count[:50], 1):
-        print '%d %s: %s' % (i, id_nicknames[user[0]] or u'已退群', user[1])
+        print '%d %s: %s' % (i, id_nicknames.get(user[0]) or u'已退群', user[1])
 
     print '\nTop 50 most talking:'
     for i, user in enumerate(reversed(users_count[-50:]), 1):
-        print '%d %s: %s' % (i, id_nicknames[user[0]] or u'已退群', user[1])
+        print '%d %s: %s' % (i, id_nicknames.get(user[0]) or u'已退群', user[1])
 
     silent_users = stats['silent_users']
     print '\nSlient users:'
     for user_id in silent_users:
-        print '%s %s' % (user_id, id_nicknames[user_id] or u'已退群')
-
-
+        print '%s %s' % (user_id, id_nicknames.get(user_id) or u'已退群')
 elif args.command == 'get_chatroom_user_stats':
+    from we.contrib.chatroom_analytics import ChatroomAnalytics
     stats = ChatroomAnalytics(args.path, args.user_id, args.chatroom_id, args.start_at, args.end_at)
     print stats.get_user_stats(args.chatroom_user_id)
+elif args.command == 'export_chatroom_records':
+    from we.contrib.html_exporter import HTMLExporter
+    exporter = HTMLExporter(args.path, args.user_id, args.chatroom_id, args.start_at, args.end_at)
+    exporter.export(args.export_path)
