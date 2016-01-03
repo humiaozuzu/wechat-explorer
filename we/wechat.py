@@ -5,6 +5,7 @@ import sqlite3
 import re
 import xmltodict
 import calendar
+import biplist
 from datetime import datetime
 
 from we.utils import logger
@@ -38,6 +39,15 @@ RecordTypeCN = {
     RecordType.TEXT: u'文本',
 }
 
+FriendTypeExlude = (
+    0,
+    1,
+    2, # groups etc
+    4, # friends only in group chat
+    6, # friends only in group chat
+    64, # 语音提醒
+)
+
 
 class WechatParser(object):
 
@@ -48,18 +58,37 @@ class WechatParser(object):
         self.user_id = user_id
         self.user_hash = id_to_digest(user_id)
 
+    def get_labels(self):
+        plist_path = self.path + '/%s/contactlabel.list' % self.user_hash
+        pl = biplist.readPlist(plist_path)
+        obj_idxs = pl['$objects'][1]['NS.objects']
+
+        label_map = {}
+        for idx in obj_idxs:
+            idx = int(idx)
+            label_map[pl['$objects'][idx]['m_uiID']] = pl['$objects'][idx+1]
+
+        return label_map
+
     def get_friends(self):
         chat_db = self.path + '/%s/DB/MM.sqlite' % self.user_hash
         logger.debug('DB path %s' % chat_db)
         conn = sqlite3.connect(chat_db)
 
         friends = []
-        for row in conn.execute('SELECT * FROM `Friend` WHERE `UsrName` NOT LIKE "%chatroom"'):
+        for row in conn.execute('SELECT f.*,fe.ConStrRes2, fe.ConRemark FROM Friend as f JOIN Friend_Ext as fe USING(UsrName) WHERE `Type` NOT IN %s AND `UsrName` NOT LIKE "gh_%%"' % FriendTypeExlude.__str__()):
+            label_pattern = '<LabelList>(.*)</LabelList>'
+            label_list_str = re.search(label_pattern, row[13], re.MULTILINE).group(1)
+            label_list = label_list_str.split(',')
+            label_list = [int(label_id) for label_id in label_list if label_id]
+
             friend = dict(
                 id=row[1],
                 nickname=row[2],
                 gender=row[6],
                 type=row[10],
+                label_ids = label_list,
+                remark = row[14],
             )
             friends.append(friend)
         return friends
