@@ -4,11 +4,24 @@
 
 ## Guide
 
+### Install via pip
+
 ``` bash
-python run.py list_chatrooms ../Documents user_id
-python run.py list_friends ../Documents user_id
-python run.py get_chatroom_stats ../Documents user_id chatroom_id@chatroom 2015-08-01 2015-09-01
-python run.py export_chatroom_records ../Documents user_id chatroom_id@chatroom 2015-10-01 2015-10-07 ../
+pip install wechat-explorer
+```
+
+### Export wechat data from your iOS backup
+
+You may use the free [iPhone Backup Extractor](http://supercrazyawesome.com/) or iExplorer. There is an folder named `Documents` in your exports.
+
+### How to use
+
+``` bash
+wexp list_chatrooms ../Documents user_id
+wexp list_friends ../Documents user_id
+wexp get_chatroom_stats ../Documents user_id chatroom_id@chatroom 2015-08-01 2015-09-01
+wexp export_chatroom_records ../Documents user_id chatroom_id@chatroom 2015-10-01 2015-10-07 ../
+wexp get_friend_label_stats ../Documents user_id
 ```
 
 HTML chatroom records to PDF
@@ -20,3 +33,4 @@ wkhtmltopdf --dpi 300 records.html records.pdf
 ## TODO
 
 - support non-text record type
+- add avatars group members
