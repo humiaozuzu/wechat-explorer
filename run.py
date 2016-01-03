@@ -40,6 +40,9 @@ p5.add_argument('chatroom_id', type=str)
 p5.add_argument('start_at', type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d'))
 p5.add_argument('end_at', type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d'))
 p5.add_argument('export_path', type=str)
+p6 = subparser.add_parser('get_friend_label_stats', help='get friend label stats')
+p6.add_argument('path', type=str)
+p6.add_argument('user_id', type=str)
 
 args = parser.parse_args()
 
@@ -47,7 +50,7 @@ if args.command == 'list_friends':
     wechat = WechatParser(args.path, args.user_id)
     friends = wechat.get_friends()
     for friend in friends:
-        msg = '%s %s' % (friend['id'], friend['nickname'])
+        msg = '%s %s(%s)' % (friend['id'], friend['nickname'], friend['remark'])
         print msg.encode('utf-8')
 elif args.command == 'list_chatrooms':
     wechat = WechatParser(args.path, args.user_id)
@@ -89,3 +92,18 @@ elif args.command == 'export_chatroom_records':
     from we.contrib.html_exporter import HTMLExporter
     exporter = HTMLExporter(args.path, args.user_id, args.chatroom_id, args.start_at, args.end_at)
     exporter.export(args.export_path)
+elif args.command == 'get_friend_label_stats':
+    wechat = WechatParser(args.path, args.user_id)
+    labels = wechat.get_labels()
+
+    from we.contrib.friend_label import FriendLabel
+    fl = FriendLabel(args.path, args.user_id)
+    stats = fl.get_stats()
+
+    print '\nUsers without labels:'
+    for user in stats['non_label_users']:
+        print '%s %s(%s)' % (user['id'], user['nickname'], user['remark'])
+    print '\nUsers with more than 2 labels:'
+    for user in stats['multi_label_users']:
+        label_str = ','.join([labels[label_id] for label_id in user['label_ids']])
+        print '%s %s(%s): %s' % (user['id'], user['nickname'], user['remark'], label_str)
