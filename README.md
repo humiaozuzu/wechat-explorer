@@ -30,6 +30,9 @@ HTML chatroom records to PDF
 wkhtmltopdf --dpi 300 records.html records.pdf
 ```
 
+![Demo](https://cloud.githubusercontent.com/assets/300016/12079004/09f2013c-b264-11e5-8a3b-8c6126dc61ae.png)
+
+
 ## TODO
 
 - support non-text record type
